@@ -1,0 +1,41 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 24px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+main {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+#imageCanvas {
+    display: block;
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+    margin: 24px auto;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+    cursor: crosshair;
+    touch-action: none;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+button {
+    padding: 12px 24px;
+    cursor: pointer;
+}
