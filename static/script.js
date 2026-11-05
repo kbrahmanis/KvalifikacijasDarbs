@@ -5,7 +5,7 @@
 const canvas = document.getElementById("imageCanvas");
 const context = canvas.getContext("2d"); // gets access to <canvas> 2d drawing tools
 
-// Make an invisible canvas 
+// Make an invisible canvas layer 
 const maskCanvas = document.createElement("canvas");
 const maskContext = maskCanvas.getContext("2d");
 
@@ -31,6 +31,7 @@ image.onload = () => {
     // Draw original image
     context.drawImage(image, 0, 0);
 }
+
 /*
    2. Painting and selection inside the canvas
 */
@@ -190,32 +191,71 @@ document.getElementById("clearButton").addEventListener("click", () => {
 });
 
 // Submit users selection
-document.getElementById("submitButton").addEventListener("click", () => {
-    // Create an export canvas
-    const exportCanvas = document.createElement("canvas");
 
-    exportCanvas.width = maskCanvas.width;
-    exportCanvas.height = maskCanvas.height;
+document.getElementById("submitButton")
+    .addEventListener("click", async () => {
 
-    const exportCtx = exportCanvas.getContext("2d");
+        // Create export canvas
+        const exportCanvas = document.createElement("canvas");
 
-    // Black background = unselected
-    exportCtx.fillStyle = "black";
-    exportCtx.fillRect(
-        0, 0,
-        exportCanvas.width,
-        exportCanvas.height
-    );
+        exportCanvas.width = maskCanvas.width;
+        exportCanvas.height = maskCanvas.height;
 
-    // White areas = selected
-    exportCtx.drawImage(maskCanvas, 0, 0);
+        const exportCtx = exportCanvas.getContext("2d");
 
-    // Convert selection to PNG
-    const maskData = exportCanvas.toDataURL("image/png");
+        // Black background
+        exportCtx.fillStyle = "black";
+        exportCtx.fillRect(
+            0, 0,
+            exportCanvas.width,
+            exportCanvas.height
+        );
 
-    // Download the mask for testing
-    const link = document.createElement("a");
-    link.href = maskData;
-    link.download = "selection-mask.png";
-    link.click();
-});
+        // Add white selection
+        exportCtx.drawImage(maskCanvas, 0, 0);
+
+        // Convert mask to Base64 PNG
+        const maskData = exportCanvas.toDataURL("image/png");
+
+        try {
+            // Send mask to Python backend
+            const response = await fetch("/api/compare", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    mask: maskData
+                })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    result.error || "Comparison failed"
+                );
+            }
+
+            // Display score
+            console.log(
+                `Similarity score: ${result.score}%`
+            );
+
+            document.getElementById("similarityScore")
+                .textContent =
+                `Similarity score: ${result.score}%`;
+
+            // Display Grad-CAM overlay
+            const heatmapImage =
+                document.getElementById("imageHeatmap");
+
+            heatmapImage.src =
+                "./resnet_output/image_1_overlay.png";
+
+            heatmapImage.hidden = false;
+
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    });
