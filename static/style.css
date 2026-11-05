@@ -60,3 +60,7 @@ button {
     padding: 12px 24px;
     cursor: pointer;
 }
+
+#nextButton[hidden] {
+    display: none;
+}

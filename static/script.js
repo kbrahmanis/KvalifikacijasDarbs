@@ -3,8 +3,10 @@
    1. CONFIGURATION
 */
 
-const IMAGE_PATH = "./images/000000004954.jpg";
-const HEATMAP_PATH = "./resnet_output/image_1_overlay.png";
+let IMAGE_PATH = "./images/image_";
+let HEATMAP_PATH = "./resnet_output/image_";
+let IMAGE_ID = 1
+
 const API_URL = "/api/compare";
 
 const BRUSH_SIZE = 20;
@@ -24,6 +26,7 @@ const similarityScore = document.getElementById("similarityScore");
 
 const clearButton = document.getElementById("clearButton");
 const submitButton = document.getElementById("submitButton");
+const nextButton = document.getElementById("nextButton");
 
 // Invisible canvas for storing user selections
 const maskCanvas = document.createElement("canvas");
@@ -44,6 +47,7 @@ let strokePoints = [];
 // Hide results initially
 heatmapImage.hidden = true;
 similarityScore.textContent = "";
+nextButton.hidden = true;
 
 
 /* 
@@ -72,7 +76,7 @@ function loadImage() {
         console.error("Failed to load image:", IMAGE_PATH);
     };
 
-    image.src = IMAGE_PATH;
+    image.src = IMAGE_PATH + IMAGE_ID + ".jpg";
 }
 
 
@@ -280,14 +284,15 @@ function exportMask() {
 */
 
 // Send user selection to Python and retrieve similarity score
-async function calculateScore(maskData) {
+async function calculateScore(maskData, image_id) {
     const response = await fetch(API_URL, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            mask: maskData
+            mask: maskData,
+            id: image_id
         })
     });
 
@@ -308,7 +313,7 @@ function displayResults(score) {
     similarityScore.textContent =
         `Similarity score: ${score}%`;
 
-    heatmapImage.src = HEATMAP_PATH;
+    heatmapImage.src = HEATMAP_PATH + IMAGE_ID + "_overlay.png";
     heatmapImage.hidden = false;
 }
 
@@ -326,9 +331,11 @@ async function submitSelection() {
     try {
         const maskData = exportMask();
 
-        const score = await calculateScore(maskData);
+        const score = await calculateScore(maskData, IMAGE_ID);
 
         displayResults(score);
+
+        nextButton.hidden = false;
 
     } catch (error) {
         console.error("Submission failed:", error);
@@ -339,6 +346,19 @@ async function submitSelection() {
     } finally {
         submitButton.disabled = false;
     }
+}
+
+function getNextImage() {
+    if (IMAGE_ID < 50) {
+        IMAGE_ID++;
+    } else {
+        // To be implemented: A popup window for starting again
+        IMAGE_ID = 0;
+    }
+
+    clearSelection();
+    loadImage();
+    nextButton.hidden = true;
 }
 
 
@@ -357,7 +377,7 @@ canvas.addEventListener("lostpointercapture", stopDrawing);
 // Buttons
 clearButton.addEventListener("click", clearSelection);
 submitButton.addEventListener("click", submitSelection);
-
+nextButton.addEventListener("click", getNextImage);
 
 /* 
    10. INITIALIZATION

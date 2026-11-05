@@ -1,10 +1,10 @@
 import numpy as np
 from PIL import Image
 
-def calculate_similarity(user_image, threshold=0.4):
+def calculate_similarity(user_image, user_image_id, threshold=0.4):
     # Load numerical Grad-CAM heatmap
     heatmap = np.load(
-        "resnet_output/image_1_heatmap.npy"
+        f"resnet_output/image_{user_image_id}_heatmap.npy" 
     ).astype(np.float32)
 
     # Normalize heatmap to [0,1]
