@@ -42,8 +42,10 @@ def compare():
         user_image = Image.open(BytesIO(image_bytes))
         user_image.load()
 
+        user_image_id = data.get("id")
+
         # Call our scoring function
-        score = calculate_similarity(user_image)
+        score = calculate_similarity(user_image, user_image_id)
 
         # Return result to JavaScript
         return jsonify({

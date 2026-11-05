@@ -29,12 +29,19 @@ LABELS_URL = (
     "imagenet-simple-labels/master/imagenet-simple-labels.json"
 )
 
-IMAGE_URLS = [
-    "http://images.cocodataset.org/test-stuff2017/000000004954.jpg",
-    "http://images.cocodataset.org/test-stuff2017/000000024309.jpg",
-    "http://images.cocodataset.org/test-stuff2017/000000028117.jpg",
-    "http://images.cocodataset.org/test-stuff2017/000000006149.jpg",
-]
+# IMAGE_URLS = [
+#     "http://images.cocodataset.org/test-stuff2017/000000004954.jpg",
+#     "http://images.cocodataset.org/test-stuff2017/000000024309.jpg",
+#     "http://images.cocodataset.org/test-stuff2017/000000028117.jpg",
+#     "http://images.cocodataset.org/test-stuff2017/000000006149.jpg",
+# ]
+
+IMAGE_DIR = Path("images")
+
+IMAGE_URLS = sorted(
+    IMAGE_DIR.glob("image_*.jpg"),
+    key=lambda path: int(path.stem.split("_")[-1])
+)
 
 # Resize the ENTIRE image to the model's input dimensions.
 # No CenterCrop means no image regions are discarded.
@@ -85,20 +92,40 @@ Returns:
     images: Original PIL images
     batch:  Preprocessed PyTorch tensor
 """
-def load_images(urls):
+# def load_images(urls):
 
+#     images = []
+#     tensors = []
+
+#     for url in urls:
+#         response = requests.get(url, timeout=30)
+#         response.raise_for_status()
+
+#         image = Image.open(BytesIO(response.content)).convert("RGB")
+
+#         images.append(image)
+#         tensors.append(image_transform(image))
+
+#     batch = torch.stack(tensors).to(DEVICE)
+
+#     return images, batch
+
+def load_images(image_paths):
     images = []
     tensors = []
 
-    for url in urls:
-        response = requests.get(url, timeout=30)
-        response.raise_for_status()
+    for path in image_paths:
+        # Load image directly from local storage
+        with Image.open(path) as img:
+            image = img.convert("RGB")
 
-        image = Image.open(BytesIO(response.content)).convert("RGB")
-
+        # Store original image
         images.append(image)
+
+        # Apply ResNet50 preprocessing
         tensors.append(image_transform(image))
 
+    # Combine processed images into a batch
     batch = torch.stack(tensors).to(DEVICE)
 
     return images, batch
@@ -341,251 +368,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-# def restore_heatmap(heatmap, original_image, resize_size=256, crop_size=224):
-#     # Original image dimensions
-#     original_width, original_height = original_image.size
-
-#     # 1. Recreate the dimensions after Resize()
-#     if original_width < original_height:
-#         resized_width = resize_size
-#         resized_height = int(
-#             resize_size * original_height / original_width
-#         )
-#     else:
-#         resized_height = resize_size
-#         resized_width = int(
-#             resize_size * original_width / original_height
-#         )
-
-#     # 2. Resize Grad-CAM to the model's crop dimensions
-#     heatmap_image = Image.fromarray(
-#         heatmap.astype(np.float32)
-#     )
-
-#     heatmap_image = heatmap_image.resize(
-#         (crop_size, crop_size),
-#         Image.Resampling.BILINEAR
-#     )
-
-#     heatmap_resized = np.asarray(heatmap_image)
-
-#     # 3. Create an empty heatmap for the resized image
-#     full_heatmap = np.zeros(
-#         (resized_height, resized_width),
-#         dtype=np.float32
-#     )
-
-#     # 4. Calculate where CenterCrop() extracted the image
-#     left = int(round((resized_width - crop_size) / 2.0))
-#     top = int(round((resized_height - crop_size) / 2.0))
-
-#     # 5. Place the Grad-CAM heatmap back into that region
-#     full_heatmap[
-#         top:top + crop_size,
-#         left:left + crop_size
-#     ] = heatmap_resized
-
-#     # 6. Resize to original image dimensions
-#     full_heatmap_image = Image.fromarray(full_heatmap)
-
-#     full_heatmap_image = full_heatmap_image.resize(
-#         (original_width, original_height),
-#         Image.Resampling.BILINEAR
-#     )
-
-#     return np.asarray(full_heatmap_image, dtype=np.float32)
-
-
-# # 1. Load ResNet50 using timm
-# resnet50 = timm.create_model('resnet50', pretrained=True)
-# resnet50.eval().to(device)
-
-# # Store GradCam intermediate activations
-
-# activations = None
-
-# def save_activations(module, inputs, output):
-#     global activations
-#     activations = output
-
-# target_layer = resnet50.layer4[-1]
-# hook = target_layer.register_forward_hook(save_activations)
-# print("Grad-Cam hook registered")
-
-# # 2. Define standard ImageNet preprocessing
-# transform = transforms.Compose([
-#     transforms.Resize(256),
-#     transforms.CenterCrop(224),
-#     transforms.ToTensor(),
-#     transforms.Normalize(
-#         mean=[0.485, 0.456, 0.406], 
-#         std=[0.229, 0.224, 0.225]
-#     ),
-# ])
-
-# # 3. Fetch ImageNet class labels mapping (for printing readable names)
-# LABELS_URL = "https://raw.githubusercontent.com/anishathalye/imagenet-simple-labels/master/imagenet-simple-labels.json"
-# imagenet_labels = json.loads(requests.get(LABELS_URL).text)
-
-# uris = [
-#     "http://images.cocodataset.org/test-stuff2017/000000004954.jpg",
-#     "http://images.cocodataset.org/test-stuff2017/000000024309.jpg",
-#     "http://images.cocodataset.org/test-stuff2017/000000028117.jpg",
-#     "http://images.cocodataset.org/test-stuff2017/000000006149.jpg",
-# ]
-
-# # 4. Prepare batch manually using standard PIL and torchvision transforms
-# tensor_list = []
-# images_list = []
-
-# for uri in uris:
-#     img = Image.open(requests.get(uri, stream=True).raw).convert("RGB")
-#     images_list.append(img)
-#     tensor_list.append(transform(img))
-
-# batch = torch.stack(tensor_list).to(device)
-
-# # 5. Inference
-# logits = resnet50(batch)
-
-# output = torch.nn.functional.softmax(logits, dim=1)
-
-# print("Logits shape:", logits.shape)
-# print("Activations shape:", activations.shape)
-
-# # 6. Get top-5 predictions manually (replaces utils.pick_n_best)
-# top5_prob, top5_catid = torch.topk(output, 5, dim=1)
-
-# # 6.1. Grad-Cam: select the highest scoring class for each image
-# target_classes = top5_catid[:,0]
-
-# # 6.2 Grad-Cam: get corresponding raw logit from each image
-# batch_indices = torch.arange(len(batch), device=device)
-
-# selected_logits = logits[
-#     batch_indices,
-#     target_classes
-# ]
-
-# # 6.3 Grad-Cam: calculate gradients of selected logits
-# gradients = torch.autograd.grad(
-#     outputs=selected_logits.sum(),
-#     inputs=activations
-# )[0]
-
-# print("Gradient shape:", gradients.shape)
-
-# # 7. GRAD-CAM: Generate one heatmap per image
-
-# # Average gradients across spatial dimensions
-# weights = gradients.mean(dim=(2, 3), keepdim=True)
-
-# # Multiply activations by their importance weights
-# cam = (weights * activations).sum(dim=1)
-
-# # Remove negative contributions
-# cam = torch.relu(cam)
-
-# print("CAM shape:", cam.shape)
-
-# # 8. GRAD-CAM: Resize heatmaps
-
-# # Add channel dimension: [4, 1, 7, 7]
-# cam = cam.unsqueeze(1)
-
-# # Resize to 224 x 224
-# cam = F.interpolate(
-#     cam,
-#     size=(224, 224),
-#     mode="bilinear",
-#     align_corners=False
-# )
-
-# # Remove channel dimension: [4, 224, 224]
-# cam = cam.squeeze(1)
-
-# # Convert to NumPy
-# cam = cam.detach().cpu().numpy()
-
-# # Normalize each heatmap independently
-# for i in range(len(cam)):
-#     cam[i] = cam[i] - cam[i].min()
-
-#     if cam[i].max() > 0:
-#         cam[i] = cam[i] / cam[i].max()
-
-# print("Final heatmap shape:", cam.shape)
-
-# # 8. Display predictions and save Grad-CAM images
-
-# # test this
-# display_transform = transforms.Compose([
-#     transforms.Resize(256),
-#     transforms.CenterCrop(224),
-# ])
-
-# for i, uri in enumerate(uris):
-
-#     # 1. Get original image
-#     original_image = images_list[i].convert("RGB")
-
-#     # 2. Get numerical Grad-CAM heatmap
-#     heatmap = np.asarray(cam[i], dtype=np.float32)
-
-#     # 3. Restore heatmap to original image coordinates
-#     heatmap = restore_heatmap(
-#         heatmap,
-#         original_image,
-#         resize_size=256,
-#         crop_size=224
-#     )
-
-#     # 4. Save aligned numerical heatmap
-#     np.save(
-#         f"{output_dir}/image_{i + 1}_heatmap.npy",
-#         heatmap
-#     )
-
-#     # 5. Convert original image to NumPy
-#     original = np.asarray(
-#         original_image
-#     ).astype(np.float32) / 255.0
-
-#     # 6. Convert heatmap to RGB
-#     heatmap_rgb = plt.get_cmap("jet")(heatmap)[..., :3]
-
-#     # 7. Calculate transparency
-#     alpha = heatmap[..., None] * 0.65
-
-#     # 8. Blend original image and heatmap
-#     overlay = original * (1 - alpha) + heatmap_rgb * alpha
-
-#     # 9. Save overlay at original resolution
-#     overlay_image = Image.fromarray(
-#         (np.clip(overlay, 0, 1) * 255).astype(np.uint8)
-#     )
-
-#     overlay_image.save(
-#         f"{output_dir}/image_{i + 1}_overlay.png"
-#     )
-
-#     # 10. Print classification results
-#     print(f"\nTop 5 predictions for {uri}:")
-
-#     for j in range(5):
-#         class_idx = top5_catid[i][j].item()
-#         class_name = imagenet_labels[class_idx]
-#         probability = top5_prob[i][j].item() * 100
-
-#         print(f"  {j + 1}. {class_name}: {probability:.2f}%")
-
-#     print("-" * 40)
-
-# hook.remove()
-
-# print("All Grad-CAM files saved successfully!")
 
 
 
