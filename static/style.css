@@ -35,6 +35,21 @@ main {
     touch-action: none;
 }
 
+#imageHeatmap {
+    display: block;
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+    margin: 24px auto;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+#imageHeatmap[hidden] {
+    display: none;
+}
+
 .controls {
     display: flex;
     justify-content: center;

@@ -1,96 +1,149 @@
-/*
-   1. Load image inside canvas
+
+/* 
+   1. CONFIGURATION
 */
 
-const canvas = document.getElementById("imageCanvas");
-const context = canvas.getContext("2d"); // gets access to <canvas> 2d drawing tools
+const IMAGE_PATH = "./images/000000004954.jpg";
+const HEATMAP_PATH = "./resnet_output/image_1_overlay.png";
+const API_URL = "/api/compare";
 
-// Make an invisible canvas layer 
+const BRUSH_SIZE = 20;
+const SELECTION_COLOR = "rgba(255, 0, 0, 0.4)";
+
+
+/* 
+   2. CANVAS AND ELEMENT SETUP
+*/
+
+// HTML elements
+const canvas = document.getElementById("imageCanvas");
+const context = canvas.getContext("2d");
+
+const heatmapImage = document.getElementById("imageHeatmap");
+const similarityScore = document.getElementById("similarityScore");
+
+const clearButton = document.getElementById("clearButton");
+const submitButton = document.getElementById("submitButton");
+
+// Invisible canvas for storing user selections
 const maskCanvas = document.createElement("canvas");
 const maskContext = maskCanvas.getContext("2d");
 
-const brushSize = 20;
-let isDrawing = false;
+// Invisible canvas for rendering the red overlay
+const overlayCanvas = document.createElement("canvas");
+const overlayContext = overlayCanvas.getContext("2d");
 
-// create image object
+// Original image
 const image = new Image();
 
-// assign its location
-image.src = "images/000000004954.jpg"
+// Drawing state
+let isDrawing = false;
+let lastPosition = null;
+let strokePoints = [];
 
-// insert the image inside the canvas after loading
-image.onload = () => {
-    // Set visible canvas dimensions
-    canvas.width = image.naturalWidth;
-    canvas.height = image.naturalHeight;
+// Hide results initially
+heatmapImage.hidden = true;
+similarityScore.textContent = "";
 
-    // Set invisible mask dimensions
-    maskCanvas.width = image.naturalWidth;
-    maskCanvas.height = image.naturalHeight;
 
-    // Draw original image
-    context.drawImage(image, 0, 0);
-}
-
-/*
-   2. Painting and selection inside the canvas
+/* 
+   3. IMAGE LOADING
 */
 
-// Convert mouse coordinates to image coordinates
+function loadImage() {
+    image.onload = () => {
+        const width = image.naturalWidth;
+        const height = image.naturalHeight;
+
+        // Match all canvas dimensions to the original image
+        canvas.width = width;
+        canvas.height = height;
+
+        maskCanvas.width = width;
+        maskCanvas.height = height;
+
+        overlayCanvas.width = width;
+        overlayCanvas.height = height;
+
+        renderCanvas();
+    };
+
+    image.onerror = () => {
+        console.error("Failed to load image:", IMAGE_PATH);
+    };
+
+    image.src = IMAGE_PATH;
+}
+
+
+/* 
+   4. CANVAS RENDERING
+*/
+
+// Redraw original image with the user's selection
+function renderCanvas() {
+    // Restore original image
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(image, 0, 0);
+
+    // Clear previous overlay
+    overlayContext.clearRect(
+        0, 0,
+        overlayCanvas.width,
+        overlayCanvas.height
+    );
+
+    // Fill overlay with semi-transparent red
+    overlayContext.fillStyle = SELECTION_COLOR;
+    overlayContext.fillRect(
+        0, 0,
+        overlayCanvas.width,
+        overlayCanvas.height
+    );
+
+    // Keep red only where the mask has been painted
+    overlayContext.globalCompositeOperation = "destination-in";
+    overlayContext.drawImage(maskCanvas, 0, 0);
+
+    // Restore default drawing mode
+    overlayContext.globalCompositeOperation = "source-over";
+
+    // Draw selection over original image
+    context.drawImage(overlayCanvas, 0, 0);
+}
+
+
+// Convert pointer coordinates to image coordinates
 function getPosition(event) {
     const rect = canvas.getBoundingClientRect();
 
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-
     return {
-        x: (event.clientX - rect.left) * scaleX,
-        y: (event.clientY - rect.top) * scaleY
+        x: (event.clientX - rect.left) * canvas.width / rect.width,
+        y: (event.clientY - rect.top) * canvas.height / rect.height
     };
 }
 
 
-// Redraw the image and selection overlay
-function renderCanvas() {
-    // Clear visible canvas
-    context.clearRect(0, 0, canvas.width, canvas.height);
+/* 
+   5. DRAWING FUNCTIONS
+*/
 
-    // Draw original image
-    context.drawImage(image, 0, 0);
-
-    // Color the selected mask red
-    context.save();
-
-    context.fillStyle = "rgba(255, 0, 0, 0.4)";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-
-    // Keep red only where the mask is painted
-    context.globalCompositeOperation = "destination-in";
-    context.drawImage(maskCanvas, 0, 0);
-
-    context.restore();
-
-    // Draw the original image behind the overlay
-    context.globalCompositeOperation = "destination-over";
-    context.drawImage(image, 0, 0);
-    context.globalCompositeOperation = "source-over";
-}
-
-// Draw a single circular brush point
+// Draw a single brush point
 function drawPoint(x, y) {
     maskContext.fillStyle = "white";
 
     maskContext.beginPath();
-    maskContext.arc(x, y, brushSize / 2, 0, Math.PI * 2);
+    maskContext.arc(x, y, BRUSH_SIZE / 2, 0, Math.PI * 2);
     maskContext.fill();
 
     renderCanvas();
 }
 
-// Draw a continuous brush stroke
+
+// Draw a continuous line between two points
 function drawLine(from, to) {
     maskContext.strokeStyle = "white";
-    maskContext.lineWidth = brushSize;
+    maskContext.lineWidth = BRUSH_SIZE;
     maskContext.lineCap = "round";
     maskContext.lineJoin = "round";
 
@@ -102,21 +155,23 @@ function drawLine(from, to) {
     renderCanvas();
 }
 
+
+// Automatically fill a closed shape
 function autoFillShape() {
     if (strokePoints.length < 3) return;
 
     const first = strokePoints[0];
     const last = strokePoints[strokePoints.length - 1];
 
-    // Distance between start and endpoint
+    // Check whether the stroke forms a closed shape
     const distance = Math.hypot(
-        last.x -first.x,
+        last.x - first.x,
         last.y - first.y
-    )
+    );
 
-    const closingDistance = brushSize;
-    if (distance > closingDistance) return;
+    if (distance > BRUSH_SIZE) return;
 
+    // Construct a path from the recorded points
     const path = new Path2D();
     path.moveTo(first.x, first.y);
 
@@ -126,28 +181,32 @@ function autoFillShape() {
 
     path.closePath();
 
+    // Fill the enclosed area
     maskContext.fillStyle = "white";
     maskContext.fill(path);
 
     renderCanvas();
 }
 
-let lastPosition = null;
 
-canvas.addEventListener("pointerdown", (event) => {
+/* 
+   6. POINTER EVENT HANDLERS
+*/
+
+function startDrawing(event) {
     if (!image.complete || !image.naturalWidth) return;
 
     isDrawing = true;
     canvas.setPointerCapture(event.pointerId);
 
     lastPosition = getPosition(event);
-
     strokePoints = [lastPosition];
 
     drawPoint(lastPosition.x, lastPosition.y);
-});
+}
 
-canvas.addEventListener("pointermove", (event) => {
+
+function continueDrawing(event) {
     if (!isDrawing) return;
 
     const currentPosition = getPosition(event);
@@ -155,107 +214,153 @@ canvas.addEventListener("pointermove", (event) => {
     strokePoints.push(currentPosition);
 
     drawLine(lastPosition, currentPosition);
+
     lastPosition = currentPosition;
-});
+}
+
 
 function stopDrawing() {
     if (!isDrawing) return;
 
     isDrawing = false;
+
     autoFillShape();
 
     lastPosition = null;
     strokePoints = [];
 }
 
-canvas.addEventListener("pointerup", stopDrawing);
-canvas.addEventListener("pointercancel", stopDrawing);
-canvas.addEventListener("lostpointercapture", stopDrawing);
 
-/*
-    3. Buttons
+/* 
+   7. SELECTION MANAGEMENT
 */
 
-// Clear canvas
-
-document.getElementById("clearButton").addEventListener("click", () => {
-    // Remove all selected areas
+// Clear the user's selection and previous results
+function clearSelection() {
     maskContext.clearRect(
         0, 0,
         maskCanvas.width,
         maskCanvas.height
     );
 
-    // Redraw the original image
     renderCanvas();
-});
 
-// Submit users selection
+    // Hide previous results
+    heatmapImage.hidden = true;
+    similarityScore.textContent = "";
+}
 
-document.getElementById("submitButton")
-    .addEventListener("click", async () => {
 
-        // Create export canvas
-        const exportCanvas = document.createElement("canvas");
+// Convert selection into a black-and-white PNG
+function exportMask() {
+    const exportCanvas = document.createElement("canvas");
 
-        exportCanvas.width = maskCanvas.width;
-        exportCanvas.height = maskCanvas.height;
+    exportCanvas.width = maskCanvas.width;
+    exportCanvas.height = maskCanvas.height;
 
-        const exportCtx = exportCanvas.getContext("2d");
+    const exportContext = exportCanvas.getContext("2d");
 
-        // Black background
-        exportCtx.fillStyle = "black";
-        exportCtx.fillRect(
-            0, 0,
-            exportCanvas.width,
-            exportCanvas.height
-        );
+    // Black = unselected
+    exportContext.fillStyle = "black";
+    exportContext.fillRect(
+        0, 0,
+        exportCanvas.width,
+        exportCanvas.height
+    );
 
-        // Add white selection
-        exportCtx.drawImage(maskCanvas, 0, 0);
+    // White = selected
+    exportContext.drawImage(maskCanvas, 0, 0);
 
-        // Convert mask to Base64 PNG
-        const maskData = exportCanvas.toDataURL("image/png");
+    return exportCanvas.toDataURL("image/png");
+}
 
-        try {
-            // Send mask to Python backend
-            const response = await fetch("/api/compare", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    mask: maskData
-                })
-            });
 
-            const result = await response.json();
+/* 
+   8. BACKEND COMMUNICATION
+*/
 
-            if (!response.ok) {
-                throw new Error(
-                    result.error || "Comparison failed"
-                );
-            }
-
-            // Display score
-            console.log(
-                `Similarity score: ${result.score}%`
-            );
-
-            document.getElementById("similarityScore")
-                .textContent =
-                `Similarity score: ${result.score}%`;
-
-            // Display Grad-CAM overlay
-            const heatmapImage =
-                document.getElementById("imageHeatmap");
-
-            heatmapImage.src =
-                "./resnet_output/image_1_overlay.png";
-
-            heatmapImage.hidden = false;
-
-        } catch (error) {
-            console.error("Error:", error);
-        }
+// Send user selection to Python and retrieve similarity score
+async function calculateScore(maskData) {
+    const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            mask: maskData
+        })
     });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            result.error || "Comparison failed"
+        );
+    }
+
+    return result.score;
+}
+
+
+// Display the similarity score and Grad-CAM overlay
+function displayResults(score) {
+    similarityScore.textContent =
+        `Similarity score: ${score}%`;
+
+    heatmapImage.src = HEATMAP_PATH;
+    heatmapImage.hidden = false;
+}
+
+
+// Handle submission
+async function submitSelection() {
+    if (!image.complete || !image.naturalWidth) return;
+
+    submitButton.disabled = true;
+
+    // Hide previous results while processing
+    heatmapImage.hidden = true;
+    similarityScore.textContent = "";
+
+    try {
+        const maskData = exportMask();
+
+        const score = await calculateScore(maskData);
+
+        displayResults(score);
+
+    } catch (error) {
+        console.error("Submission failed:", error);
+
+        similarityScore.textContent =
+            "Could not calculate similarity score.";
+
+    } finally {
+        submitButton.disabled = false;
+    }
+}
+
+
+/* 
+   9. EVENT LISTENERS
+*/
+
+// Canvas drawing
+canvas.addEventListener("pointerdown", startDrawing);
+canvas.addEventListener("pointermove", continueDrawing);
+
+canvas.addEventListener("pointerup", stopDrawing);
+canvas.addEventListener("pointercancel", stopDrawing);
+canvas.addEventListener("lostpointercapture", stopDrawing);
+
+// Buttons
+clearButton.addEventListener("click", clearSelection);
+submitButton.addEventListener("click", submitSelection);
+
+
+/* 
+   10. INITIALIZATION
+*/
+
+loadImage();
