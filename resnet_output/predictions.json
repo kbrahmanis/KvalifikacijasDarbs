@@ -1,0 +1,1102 @@
+{
+    "image_1.jpg": [
+        {
+            "category": "tricycle",
+            "confidence": 98.22
+        },
+        {
+            "category": "golf cart",
+            "confidence": 0.67
+        },
+        {
+            "category": "pulled rickshaw",
+            "confidence": 0.61
+        },
+        {
+            "category": "horse-drawn vehicle",
+            "confidence": 0.05
+        },
+        {
+            "category": "lakeshore",
+            "confidence": 0.02
+        }
+    ],
+    "image_2.jpg": [
+        {
+            "category": "barn",
+            "confidence": 25.87
+        },
+        {
+            "category": "lakeshore",
+            "confidence": 14.03
+        },
+        {
+            "category": "boathouse",
+            "confidence": 11.21
+        },
+        {
+            "category": "valley",
+            "confidence": 11.11
+        },
+        {
+            "category": "split-rail fence",
+            "confidence": 7.99
+        }
+    ],
+    "image_3.jpg": [
+        {
+            "category": "refrigerator",
+            "confidence": 99.99
+        },
+        {
+            "category": "rotisserie",
+            "confidence": 0.01
+        },
+        {
+            "category": "grocery store",
+            "confidence": 0.0
+        },
+        {
+            "category": "plate",
+            "confidence": 0.0
+        },
+        {
+            "category": "restaurant",
+            "confidence": 0.0
+        }
+    ],
+    "image_4.jpg": [
+        {
+            "category": "barbershop",
+            "confidence": 41.28
+        },
+        {
+            "category": "restaurant",
+            "confidence": 10.63
+        },
+        {
+            "category": "barber chair",
+            "confidence": 10.06
+        },
+        {
+            "category": "sliding door",
+            "confidence": 8.58
+        },
+        {
+            "category": "shoe store",
+            "confidence": 5.67
+        }
+    ],
+    "image_5.jpg": [
+        {
+            "category": "microwave oven",
+            "confidence": 87.95
+        },
+        {
+            "category": "wok",
+            "confidence": 1.75
+        },
+        {
+            "category": "ladle",
+            "confidence": 1.09
+        },
+        {
+            "category": "cauldron",
+            "confidence": 0.57
+        },
+        {
+            "category": "strainer",
+            "confidence": 0.5
+        }
+    ],
+    "image_6.jpg": [
+        {
+            "category": "swimsuit",
+            "confidence": 59.96
+        },
+        {
+            "category": "jeans",
+            "confidence": 15.89
+        },
+        {
+            "category": "diaper",
+            "confidence": 3.91
+        },
+        {
+            "category": "couch",
+            "confidence": 1.42
+        },
+        {
+            "category": "rocking chair",
+            "confidence": 1.35
+        }
+    ],
+    "image_7.jpg": [
+        {
+            "category": "pajamas",
+            "confidence": 51.0
+        },
+        {
+            "category": "waffle iron",
+            "confidence": 6.23
+        },
+        {
+            "category": "wooden spoon",
+            "confidence": 2.37
+        },
+        {
+            "category": "spatula",
+            "confidence": 2.17
+        },
+        {
+            "category": "frying pan",
+            "confidence": 1.92
+        }
+    ],
+    "image_8.jpg": [
+        {
+            "category": "plate",
+            "confidence": 80.01
+        },
+        {
+            "category": "dining table",
+            "confidence": 8.73
+        },
+        {
+            "category": "guacamole",
+            "confidence": 2.16
+        },
+        {
+            "category": "carbonara",
+            "confidence": 0.57
+        },
+        {
+            "category": "consomme",
+            "confidence": 0.49
+        }
+    ],
+    "image_9.jpg": [
+        {
+            "category": "barber chair",
+            "confidence": 19.85
+        },
+        {
+            "category": "barbershop",
+            "confidence": 18.72
+        },
+        {
+            "category": "shoe store",
+            "confidence": 6.12
+        },
+        {
+            "category": "stretcher",
+            "confidence": 5.31
+        },
+        {
+            "category": "potter's wheel",
+            "confidence": 4.17
+        }
+    ],
+    "image_10.jpg": [
+        {
+            "category": "microwave oven",
+            "confidence": 77.05
+        },
+        {
+            "category": "washing machine",
+            "confidence": 4.93
+        },
+        {
+            "category": "plate rack",
+            "confidence": 3.92
+        },
+        {
+            "category": "toaster",
+            "confidence": 2.36
+        },
+        {
+            "category": "stove",
+            "confidence": 2.34
+        }
+    ],
+    "image_11.jpg": [
+        {
+            "category": "stove",
+            "confidence": 96.04
+        },
+        {
+            "category": "wok",
+            "confidence": 1.13
+        },
+        {
+            "category": "frying pan",
+            "confidence": 0.87
+        },
+        {
+            "category": "waffle iron",
+            "confidence": 0.37
+        },
+        {
+            "category": "microwave oven",
+            "confidence": 0.23
+        }
+    ],
+    "image_12.jpg": [
+        {
+            "category": "ski",
+            "confidence": 99.99
+        },
+        {
+            "category": "ski mask",
+            "confidence": 0.0
+        },
+        {
+            "category": "tripod",
+            "confidence": 0.0
+        },
+        {
+            "category": "scarf",
+            "confidence": 0.0
+        },
+        {
+            "category": "bobsleigh",
+            "confidence": 0.0
+        }
+    ],
+    "image_13.jpg": [
+        {
+            "category": "ski",
+            "confidence": 99.89
+        },
+        {
+            "category": "ski mask",
+            "confidence": 0.02
+        },
+        {
+            "category": "tent",
+            "confidence": 0.01
+        },
+        {
+            "category": "alp",
+            "confidence": 0.01
+        },
+        {
+            "category": "swing",
+            "confidence": 0.0
+        }
+    ],
+    "image_14.jpg": [
+        {
+            "category": "ski",
+            "confidence": 99.97
+        },
+        {
+            "category": "ski mask",
+            "confidence": 0.01
+        },
+        {
+            "category": "yurt",
+            "confidence": 0.0
+        },
+        {
+            "category": "tent",
+            "confidence": 0.0
+        },
+        {
+            "category": "alp",
+            "confidence": 0.0
+        }
+    ],
+    "image_15.jpg": [
+        {
+            "category": "dining table",
+            "confidence": 19.98
+        },
+        {
+            "category": "microwave oven",
+            "confidence": 14.73
+        },
+        {
+            "category": "restaurant",
+            "confidence": 10.62
+        },
+        {
+            "category": "china cabinet",
+            "confidence": 7.46
+        },
+        {
+            "category": "sliding door",
+            "confidence": 7.29
+        }
+    ],
+    "image_16.jpg": [
+        {
+            "category": "dog sled",
+            "confidence": 45.01
+        },
+        {
+            "category": "ski",
+            "confidence": 19.86
+        },
+        {
+            "category": "yurt",
+            "confidence": 5.6
+        },
+        {
+            "category": "bobsleigh",
+            "confidence": 4.65
+        },
+        {
+            "category": "alp",
+            "confidence": 3.78
+        }
+    ],
+    "image_17.jpg": [
+        {
+            "category": "ski",
+            "confidence": 86.53
+        },
+        {
+            "category": "alp",
+            "confidence": 12.74
+        },
+        {
+            "category": "valley",
+            "confidence": 0.19
+        },
+        {
+            "category": "snowmobile",
+            "confidence": 0.04
+        },
+        {
+            "category": "ski mask",
+            "confidence": 0.01
+        }
+    ],
+    "image_18.jpg": [
+        {
+            "category": "alp",
+            "confidence": 56.15
+        },
+        {
+            "category": "dog sled",
+            "confidence": 20.54
+        },
+        {
+            "category": "ski",
+            "confidence": 13.31
+        },
+        {
+            "category": "ski mask",
+            "confidence": 1.76
+        },
+        {
+            "category": "snowmobile",
+            "confidence": 1.37
+        }
+    ],
+    "image_19.jpg": [
+        {
+            "category": "restaurant",
+            "confidence": 96.59
+        },
+        {
+            "category": "dining table",
+            "confidence": 0.66
+        },
+        {
+            "category": "bakery",
+            "confidence": 0.31
+        },
+        {
+            "category": "rotisserie",
+            "confidence": 0.27
+        },
+        {
+            "category": "plate",
+            "confidence": 0.21
+        }
+    ],
+    "image_20.jpg": [
+        {
+            "category": "microwave oven",
+            "confidence": 17.5
+        },
+        {
+            "category": "china cabinet",
+            "confidence": 15.39
+        },
+        {
+            "category": "shoji",
+            "confidence": 8.61
+        },
+        {
+            "category": "wardrobe",
+            "confidence": 7.61
+        },
+        {
+            "category": "desk",
+            "confidence": 7.19
+        }
+    ],
+    "image_21.jpg": [
+        {
+            "category": "microwave oven",
+            "confidence": 94.79
+        },
+        {
+            "category": "dishwasher",
+            "confidence": 1.16
+        },
+        {
+            "category": "window shade",
+            "confidence": 0.87
+        },
+        {
+            "category": "medicine chest",
+            "confidence": 0.21
+        },
+        {
+            "category": "toaster",
+            "confidence": 0.21
+        }
+    ],
+    "image_22.jpg": [
+        {
+            "category": "sliding door",
+            "confidence": 26.16
+        },
+        {
+            "category": "folding chair",
+            "confidence": 11.63
+        },
+        {
+            "category": "patio",
+            "confidence": 8.4
+        },
+        {
+            "category": "couch",
+            "confidence": 6.83
+        },
+        {
+            "category": "shoji",
+            "confidence": 5.76
+        }
+    ],
+    "image_23.jpg": [
+        {
+            "category": "microwave oven",
+            "confidence": 97.42
+        },
+        {
+            "category": "medicine chest",
+            "confidence": 0.69
+        },
+        {
+            "category": "toaster",
+            "confidence": 0.31
+        },
+        {
+            "category": "refrigerator",
+            "confidence": 0.27
+        },
+        {
+            "category": "dishwasher",
+            "confidence": 0.23
+        }
+    ],
+    "image_24.jpg": [
+        {
+            "category": "spatula",
+            "confidence": 32.47
+        },
+        {
+            "category": "stove",
+            "confidence": 32.18
+        },
+        {
+            "category": "wok",
+            "confidence": 5.88
+        },
+        {
+            "category": "ladle",
+            "confidence": 3.94
+        },
+        {
+            "category": "microwave oven",
+            "confidence": 3.53
+        }
+    ],
+    "image_25.jpg": [
+        {
+            "category": "hand plane",
+            "confidence": 38.77
+        },
+        {
+            "category": "dough",
+            "confidence": 33.77
+        },
+        {
+            "category": "bakery",
+            "confidence": 6.9
+        },
+        {
+            "category": "tobacco shop",
+            "confidence": 1.74
+        },
+        {
+            "category": "tray",
+            "confidence": 1.05
+        }
+    ],
+    "image_26.jpg": [
+        {
+            "category": "hand plane",
+            "confidence": 29.29
+        },
+        {
+            "category": "dough",
+            "confidence": 29.11
+        },
+        {
+            "category": "tobacco shop",
+            "confidence": 4.38
+        },
+        {
+            "category": "waffle iron",
+            "confidence": 3.08
+        },
+        {
+            "category": "bakery",
+            "confidence": 2.67
+        }
+    ],
+    "image_27.jpg": [
+        {
+            "category": "restaurant",
+            "confidence": 30.39
+        },
+        {
+            "category": "barbershop",
+            "confidence": 23.42
+        },
+        {
+            "category": "barber chair",
+            "confidence": 14.03
+        },
+        {
+            "category": "grocery store",
+            "confidence": 3.32
+        },
+        {
+            "category": "tobacco shop",
+            "confidence": 2.54
+        }
+    ],
+    "image_28.jpg": [
+        {
+            "category": "unicycle",
+            "confidence": 65.01
+        },
+        {
+            "category": "fountain",
+            "confidence": 8.04
+        },
+        {
+            "category": "crane (machine)",
+            "confidence": 1.8
+        },
+        {
+            "category": "tricycle",
+            "confidence": 1.61
+        },
+        {
+            "category": "pedestal",
+            "confidence": 1.37
+        }
+    ],
+    "image_29.jpg": [
+        {
+            "category": "movie theater",
+            "confidence": 96.47
+        },
+        {
+            "category": "monitor",
+            "confidence": 0.45
+        },
+        {
+            "category": "laptop computer",
+            "confidence": 0.41
+        },
+        {
+            "category": "projector",
+            "confidence": 0.34
+        },
+        {
+            "category": "television",
+            "confidence": 0.25
+        }
+    ],
+    "image_30.jpg": [
+        {
+            "category": "dam",
+            "confidence": 36.67
+        },
+        {
+            "category": "crutch",
+            "confidence": 11.26
+        },
+        {
+            "category": "unicycle",
+            "confidence": 7.61
+        },
+        {
+            "category": "breakwater",
+            "confidence": 5.99
+        },
+        {
+            "category": "picket fence",
+            "confidence": 4.22
+        }
+    ],
+    "image_31.jpg": [
+        {
+            "category": "stove",
+            "confidence": 99.73
+        },
+        {
+            "category": "spatula",
+            "confidence": 0.04
+        },
+        {
+            "category": "coffeemaker",
+            "confidence": 0.04
+        },
+        {
+            "category": "wok",
+            "confidence": 0.03
+        },
+        {
+            "category": "frying pan",
+            "confidence": 0.02
+        }
+    ],
+    "image_32.jpg": [
+        {
+            "category": "microwave oven",
+            "confidence": 84.02
+        },
+        {
+            "category": "home theater",
+            "confidence": 6.54
+        },
+        {
+            "category": "medicine chest",
+            "confidence": 1.76
+        },
+        {
+            "category": "dining table",
+            "confidence": 1.38
+        },
+        {
+            "category": "dishwasher",
+            "confidence": 0.93
+        }
+    ],
+    "image_33.jpg": [
+        {
+            "category": "lab coat",
+            "confidence": 21.25
+        },
+        {
+            "category": "ladle",
+            "confidence": 19.86
+        },
+        {
+            "category": "dishwasher",
+            "confidence": 6.13
+        },
+        {
+            "category": "microwave oven",
+            "confidence": 6.08
+        },
+        {
+            "category": "water jug",
+            "confidence": 3.03
+        }
+    ],
+    "image_34.jpg": [
+        {
+            "category": "ski",
+            "confidence": 98.96
+        },
+        {
+            "category": "catamaran",
+            "confidence": 0.21
+        },
+        {
+            "category": "trimaran",
+            "confidence": 0.16
+        },
+        {
+            "category": "motorboat",
+            "confidence": 0.07
+        },
+        {
+            "category": "promontory",
+            "confidence": 0.04
+        }
+    ],
+    "image_35.jpg": [
+        {
+            "category": "syringe",
+            "confidence": 32.82
+        },
+        {
+            "category": "loupe",
+            "confidence": 19.73
+        },
+        {
+            "category": "website",
+            "confidence": 12.39
+        },
+        {
+            "category": "harmonica",
+            "confidence": 3.8
+        },
+        {
+            "category": "sunglasses",
+            "confidence": 2.59
+        }
+    ],
+    "image_36.jpg": [
+        {
+            "category": "barber chair",
+            "confidence": 21.82
+        },
+        {
+            "category": "barbershop",
+            "confidence": 20.15
+        },
+        {
+            "category": "restaurant",
+            "confidence": 19.8
+        },
+        {
+            "category": "microwave oven",
+            "confidence": 4.37
+        },
+        {
+            "category": "bakery",
+            "confidence": 2.22
+        }
+    ],
+    "image_37.jpg": [
+        {
+            "category": "unicycle",
+            "confidence": 22.63
+        },
+        {
+            "category": "race car",
+            "confidence": 13.64
+        },
+        {
+            "category": "flagpole",
+            "confidence": 11.65
+        },
+        {
+            "category": "pole",
+            "confidence": 11.63
+        },
+        {
+            "category": "go-kart",
+            "confidence": 3.86
+        }
+    ],
+    "image_38.jpg": [
+        {
+            "category": "chime",
+            "confidence": 39.29
+        },
+        {
+            "category": "medicine chest",
+            "confidence": 11.87
+        },
+        {
+            "category": "fountain",
+            "confidence": 7.06
+        },
+        {
+            "category": "microwave oven",
+            "confidence": 3.09
+        },
+        {
+            "category": "dining table",
+            "confidence": 2.73
+        }
+    ],
+    "image_39.jpg": [
+        {
+            "category": "banana",
+            "confidence": 92.51
+        },
+        {
+            "category": "orange",
+            "confidence": 6.58
+        },
+        {
+            "category": "weighing scale",
+            "confidence": 0.08
+        },
+        {
+            "category": "sink",
+            "confidence": 0.04
+        },
+        {
+            "category": "lemon",
+            "confidence": 0.03
+        }
+    ],
+    "image_40.jpg": [
+        {
+            "category": "desk",
+            "confidence": 14.08
+        },
+        {
+            "category": "toaster",
+            "confidence": 13.34
+        },
+        {
+            "category": "stove",
+            "confidence": 8.46
+        },
+        {
+            "category": "radio",
+            "confidence": 5.51
+        },
+        {
+            "category": "dishwasher",
+            "confidence": 4.79
+        }
+    ],
+    "image_41.jpg": [
+        {
+            "category": "shoal",
+            "confidence": 99.28
+        },
+        {
+            "category": "lakeshore",
+            "confidence": 0.08
+        },
+        {
+            "category": "Australian Kelpie",
+            "confidence": 0.03
+        },
+        {
+            "category": "Giant Schnauzer",
+            "confidence": 0.03
+        },
+        {
+            "category": "Labrador Retriever",
+            "confidence": 0.03
+        }
+    ],
+    "image_42.jpg": [
+        {
+            "category": "sunglasses",
+            "confidence": 63.66
+        },
+        {
+            "category": "sunglass",
+            "confidence": 11.97
+        },
+        {
+            "category": "seat belt",
+            "confidence": 3.72
+        },
+        {
+            "category": "teddy bear",
+            "confidence": 2.57
+        },
+        {
+            "category": "cowboy hat",
+            "confidence": 1.17
+        }
+    ],
+    "image_43.jpg": [
+        {
+            "category": "ski",
+            "confidence": 87.45
+        },
+        {
+            "category": "ski mask",
+            "confidence": 5.45
+        },
+        {
+            "category": "shovel",
+            "confidence": 2.75
+        },
+        {
+            "category": "St. Bernard",
+            "confidence": 0.38
+        },
+        {
+            "category": "Pembroke Welsh Corgi",
+            "confidence": 0.15
+        }
+    ],
+    "image_44.jpg": [
+        {
+            "category": "butcher shop",
+            "confidence": 30.34
+        },
+        {
+            "category": "restaurant",
+            "confidence": 14.54
+        },
+        {
+            "category": "barbershop",
+            "confidence": 13.8
+        },
+        {
+            "category": "grocery store",
+            "confidence": 7.02
+        },
+        {
+            "category": "bakery",
+            "confidence": 5.49
+        }
+    ],
+    "image_45.jpg": [
+        {
+            "category": "mountain bike",
+            "confidence": 18.03
+        },
+        {
+            "category": "bow",
+            "confidence": 14.42
+        },
+        {
+            "category": "airship",
+            "confidence": 8.19
+        },
+        {
+            "category": "unicycle",
+            "confidence": 3.82
+        },
+        {
+            "category": "solar thermal collector",
+            "confidence": 3.6
+        }
+    ],
+    "image_46.jpg": [
+        {
+            "category": "bathtub",
+            "confidence": 77.75
+        },
+        {
+            "category": "tub",
+            "confidence": 4.72
+        },
+        {
+            "category": "sunglasses",
+            "confidence": 2.29
+        },
+        {
+            "category": "miniskirt",
+            "confidence": 1.04
+        },
+        {
+            "category": "sunglass",
+            "confidence": 0.8
+        }
+    ],
+    "image_47.jpg": [
+        {
+            "category": "Golden Retriever",
+            "confidence": 48.66
+        },
+        {
+            "category": "Labrador Retriever",
+            "confidence": 8.65
+        },
+        {
+            "category": "Irish Terrier",
+            "confidence": 7.02
+        },
+        {
+            "category": "Pembroke Welsh Corgi",
+            "confidence": 4.14
+        },
+        {
+            "category": "Soft-coated Wheaten Terrier",
+            "confidence": 3.57
+        }
+    ],
+    "image_48.jpg": [
+        {
+            "category": "tandem bicycle",
+            "confidence": 99.38
+        },
+        {
+            "category": "tricycle",
+            "confidence": 0.05
+        },
+        {
+            "category": "umbrella",
+            "confidence": 0.05
+        },
+        {
+            "category": "stretcher",
+            "confidence": 0.04
+        },
+        {
+            "category": "mop",
+            "confidence": 0.02
+        }
+    ],
+    "image_49.jpg": [
+        {
+            "category": "barrel",
+            "confidence": 84.61
+        },
+        {
+            "category": "rain barrel",
+            "confidence": 1.73
+        },
+        {
+            "category": "tub",
+            "confidence": 1.6
+        },
+        {
+            "category": "waste container",
+            "confidence": 1.45
+        },
+        {
+            "category": "milk can",
+            "confidence": 1.24
+        }
+    ],
+    "image_50.jpg": [
+        {
+            "category": "tub",
+            "confidence": 23.23
+        },
+        {
+            "category": "bathtub",
+            "confidence": 22.06
+        },
+        {
+            "category": "sink",
+            "confidence": 18.98
+        },
+        {
+            "category": "Egyptian Mau",
+            "confidence": 6.8
+        },
+        {
+            "category": "toilet paper",
+            "confidence": 6.5
+        }
+    ]
+}

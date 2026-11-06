@@ -25,10 +25,18 @@
             
             <div class="images">
                 <canvas id="imageCanvas"></canvas>
+
+                <section id="results" hidden> 
+                    <h2>AI Results</h2>
+
+                    <p id="similarityScore"></p>
+
+                    <h3> Top 5 predictions</h3>
+                    <div id="predictions"></div>
+                </section>
+
                 <img id="imageHeatmap" hidden>
             </div>
-
-            <p id="similarityScore"> </p>
 
             <div class="controlls">
                 <button id="clearButton">Clear</button>

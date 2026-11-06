@@ -256,22 +256,20 @@ def create_overlay(original_image, heatmap):
 
     return Image.fromarray(overlay)
 
-"""Print the top 5 classifications for an image."""
-def print_predictions(probabilities, labels, image_url):
+"""Get the top 5 classifications for an image."""
 
+def get_predictions(probabilities, labels):
     top_probs, top_indices = torch.topk(probabilities, 5)
 
-    print(f"\nTop 5 predictions for {image_url}:")
+    predictions = []
 
-    for rank, (prob, class_idx) in enumerate(
-        zip(top_probs, top_indices), start=1
-    ):
-        class_name = labels[class_idx.item()]
-        confidence = prob.item() * 100
+    for prob, class_idx in zip(top_probs, top_indices):
+        predictions.append({
+            "category": labels[class_idx.item()],
+            "confidence": round(prob.item() * 100, 2)
+        })
 
-        print(f"  {rank}. {class_name}: {confidence:.2f}%")
-
-    print("-" * 40)
+    return predictions
 
 
 """
@@ -283,11 +281,14 @@ Saves:
 
 Also prints the top 5 class predictions.
 """
-def save_results(images, heatmaps, probabilities, labels, urls):
+def save_results(images, heatmaps, probabilities, labels):
+
+    all_predictions = {}
 
     for i, original_image in enumerate(images):
 
         image_number = i + 1
+        image_name = f"image_{image_number}.jpg"
 
         # Restore heatmap to ORIGINAL image dimensions.
         heatmap = resize_heatmap(
@@ -309,16 +310,29 @@ def save_results(images, heatmaps, probabilities, labels, urls):
         )
 
         # Print classification results.
-        print_predictions(
+        all_predictions[image_name] = get_predictions(
             probabilities[i],
-            labels,
-            urls[i]
+            labels
         )
 
         print(
             f"Image {image_number} saved: "
             f"{original_image.width}x{original_image.height}"
         )
+
+    with open(
+        OUTPUT_DIR / "predictions.json",
+        "w",
+        encoding="utf-8"
+    ) as file:
+        json.dump(
+            all_predictions,
+            file,
+            indent=4,
+            ensure_ascii=False
+        )
+
+    print("All predictions saved successfully!")
 
 # --- 6. MAIN
 
@@ -356,7 +370,6 @@ def main():
             heatmaps,
             probabilities,
             labels,
-            IMAGE_URLS
         )
 
     finally:
