@@ -23,6 +23,7 @@ const context = canvas.getContext("2d");
 
 const heatmapImage = document.getElementById("imageHeatmap");
 const similarityScore = document.getElementById("similarityScore");
+const aiPredictions = document.getElementById("results");
 
 const clearButton = document.getElementById("clearButton");
 const submitButton = document.getElementById("submitButton");
@@ -48,7 +49,7 @@ let strokePoints = [];
 heatmapImage.hidden = true;
 similarityScore.textContent = "";
 nextButton.hidden = true;
-
+aiPredictions.hidden = true;
 
 /* 
    3. IMAGE LOADING
@@ -252,6 +253,7 @@ function clearSelection() {
     // Hide previous results
     heatmapImage.hidden = true;
     similarityScore.textContent = "";
+    aiPredictions.hidden = true;
 }
 
 
@@ -307,6 +309,38 @@ async function calculateScore(maskData, image_id) {
     return result.score;
 }
 
+async function getPredictions() {
+    const imageName = IMAGE_PATH.split("/").pop() + IMAGE_ID + ".jpg";
+
+    const response = await fetch(
+        `/api/predictions/${encodeURIComponent(imageName)}`
+    );
+
+    if (!response.ok) {
+        throw new Error("Failed to load predictions");
+    }
+
+    return await response.json();
+}
+
+// Display the five predictions
+function displayPredictions(predictions) {
+    const container = document.getElementById("predictions");
+
+    // Remove previous results
+    container.replaceChildren();
+
+    for (const prediction of predictions) {
+        const item = document.createElement("p");
+
+        item.textContent =
+            `${prediction.category}: ${prediction.confidence.toFixed(2)}%`;
+
+        container.appendChild(item);
+    }
+
+    aiPredictions.hidden = false;
+}
 
 // Display the similarity score and Grad-CAM overlay
 function displayResults(score) {
@@ -317,7 +351,6 @@ function displayResults(score) {
     heatmapImage.hidden = false;
 }
 
-
 // Handle submission
 async function submitSelection() {
     if (!image.complete || !image.naturalWidth) return;
@@ -327,13 +360,17 @@ async function submitSelection() {
     // Hide previous results while processing
     heatmapImage.hidden = true;
     similarityScore.textContent = "";
+    aiPredictions.hidden = true;
 
     try {
         const maskData = exportMask();
 
         const score = await calculateScore(maskData, IMAGE_ID);
+        const predictions = await getPredictions();
 
         displayResults(score);
+
+        displayPredictions(predictions);
 
         nextButton.hidden = false;
 
@@ -359,6 +396,7 @@ function getNextImage() {
     clearSelection();
     loadImage();
     nextButton.hidden = true;
+    aiPredictions.hidden = true;
 }
 
 

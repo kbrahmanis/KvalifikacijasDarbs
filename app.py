@@ -7,8 +7,17 @@ from io import BytesIO
 import base64
 import binascii
 
+import json
+import re
+from pathlib import Path
+
 app = Flask(__name__)
 
+PREDICTIONS_PATH = (
+    Path(__file__).resolve().parent
+    / "resnet_output"
+    / "predictions.json"
+)
 
 @app.route("/api/compare", methods=["POST"])
 def compare():
@@ -75,6 +84,22 @@ def outputs(filename):
 
     return send_from_directory("resnet_output", filename)
 
+
+@app.route("/api/predictions/<image_name>", methods=["GET"])
+def get_image_predictions(image_name):
+    # Only allow filenames like image_1.jpg
+    if not re.fullmatch(r"image_[1-9]\d*\.jpg", image_name):
+        return jsonify({"error": "Invalid image name"}), 400
+
+    with open(PREDICTIONS_PATH, "r", encoding="utf-8") as file:
+        predictions = json.load(file)
+
+    image_predictions = predictions.get(image_name)
+
+    if image_predictions is None:
+        return jsonify({"error": "Predictions not found"}), 404
+
+    return jsonify(image_predictions)
 
 if __name__ == "__main__":
     app.run(debug=True)
